@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PROJECT EDEN - OPERATION: CLEAN WATER</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header id="hud">
+  <ol id="steps"><li>가이드</li><li>중금속 제거</li><li>광촉매 처리</li><li>최종 평가</li></ol>
+  <div id="stats"><button class="btn mini" id="btnTalkToggle">대사: 켜짐</button> 중금속 <b id="hMetal"></b> 유기 <b id="hOrg"></b> 자원 <b id="hRes"></b></div>
+</header>
+<main>
+<!-- 화면 1: 가이드 -->
+<section id="s1" class="screen active card">
+  <h1>OPERATION: CLEAN WATER</h1>
+  <p>제3인류의 지하수에서 중금속과 유기오염물질이 검출되었다. 에덴에서 확보한 나노기술 연구 자료를 활용해 정수 시스템을 개발하라.</p>
+  <div class="two">
+    <div><h2>목표</h2><ul><li>중금속 오염도 <span id="gM"></span> 이하</li><li>유기오염도 <span id="gO"></span> 이하</li><li>자성 나노입자 회수 완료</li><li>가능한 한 많은 연구 자원 확보</li></ul></div>
+    <div><h2>초기 수치</h2><ul><li>중금속 오염도 <span id="iM"></span></li><li>유기오염도 <span id="iO"></span></li><li>연구 자원 <span id="iR"></span></li></ul></div>
+  </div>
+  <p class="notice">모든 수치는 교육용 가상 점수이며, 실제 수질 농도나 음용수 안전 기준이 아닙니다.</p>
+  <button class="btn primary" id="btnStart">연구 시작</button>
+</section>
+
+<!-- 화면 2: 중금속 제거 -->
+<section id="s2" class="screen">
+  <div class="lab">
+    <div class="card"><h2>자성 나노입자로 중금속 제거</h2>
+      <div class="legend"><i class="p metal"></i>중금속 <i class="p nano"></i>자성 나노입자</div>
+      <div class="tank" id="tank1"><div class="murk"></div><div class="magnet" id="magnet"></div></div>
+      <div class="say" id="say2"></div>
+    </div>
+    <div class="card panel">
+      <button class="btn" id="btnP1">원리 보기</button>
+      <h3>나노입자 투입량</h3><div class="opt" id="doseOpt"></div>
+      <h3>혼합 시간</h3><div class="opt" id="mixOpt"></div>
+      <p>이 설계의 비용(회수 비용 포함): <b id="cost1">-</b></p>
+      <button class="btn primary" id="btnMix" disabled>혼합 시작</button>
+      <button class="btn" id="btnMag" disabled>자석 작동</button>
+      <p class="note" id="note1"></p>
+      <p class="result" id="res1"></p>
+      <h3 id="trialInfo"></h3>
+      <table class="hist"><tbody id="hist"></tbody></table>
+      <button class="btn" id="btnRetry" disabled>조건 바꿔 모의 실험</button>
+      <p class="small">모의 실험은 자원이 줄지 않아요. 확정한 설계의 비용만 한 번 차감됩니다.</p>
+    </div>
+  </div>
+  <div class="card log" id="log2"></div>
+</section>
+
+<!-- 화면 3: 광촉매 -->
+<section id="s3" class="screen">
+  <div class="lab">
+    <div class="card"><h2>TiO₂ 광촉매로 유기오염물 처리</h2>
+      <div class="legend"><i class="p metal"></i>중금속(그대로 남음) <i class="p org"></i>유기오염물</div>
+      <div class="lamp" id="lamp">UV 램프</div>
+      <div class="tank" id="tank2"><div class="murk"></div><div class="murk2"></div><div class="beam" id="beam"></div></div>
+      <div class="say" id="say3"></div>
+    </div>
+    <div class="card panel">
+      <button class="btn" id="btnP2">원리 보기</button>
+      <h3>자외선 조사 시간</h3><div class="opt" id="uvOpt"></div>
+      <p>남은 연구 자원: <b id="res3Left"></b></p>
+      <button class="btn primary" id="btnUV" disabled>조사 시작</button>
+      <p class="result" id="res3"></p>
+      <button class="btn primary" id="btnFinal" disabled>최종 평가</button>
+    </div>
+  </div>
+  <div class="card log" id="log3"></div>
+</section>
+
+<!-- 화면 4: 최종 평가 -->
+<section id="s4" class="screen card">
+  <h1>최종 평가</h1>
+  <table class="final" id="fTable"></table>
+  <h2 id="judge"></h2><p id="verdict"></p>
+  <div id="report"></div>
+  <div class="say" id="say4"></div>
+  <p class="notice">모든 판정은 게임 속 모의 정화 목표에 대한 것이며, 실제 식수 안전성을 보증하지 않습니다.</p>
+  <button class="btn primary" id="btnAgain">다시 도전하기</button>
+</section>
+</main>
+<div id="talk" hidden><div class="face"></div><div class="tx"></div><div class="tbtn"><button class="btn" id="talkNext">다음</button></div></div>
+<dialog id="dlg"><div class="dlgbar"><h2 id="dlgTitle"></h2><button class="btn" id="dlgClose">닫기</button></div>
+<div id="pr1" hidden><svg viewBox="0 0 900 330" role="img" aria-label="자성 나노입자가 중금속 이온을 포집하고 자석으로 회수되는 과정">
+<defs><g id="np"><circle r="42" fill="#1b6f8a" stroke="#2de2d0" stroke-width="3"/>
+<path stroke="#ffd24a" stroke-width="3" d="M42 0L66 0M30 30L47 47M0 42L0 66M-30 30L-47 47M-42 0L-66 0M-30-30L-47-47M0-42L0-66M30-30L47-47"/>
+<g fill="#ffd24a"><circle cx="66" r="6"/><circle cx="47" cy="47" r="6"/><circle cy="66" r="6"/><circle cx="-47" cy="47" r="6"/><circle cx="-66" r="6"/><circle cx="-47" cy="-47" r="6"/><circle cy="-66" r="6"/><circle cx="47" cy="-47" r="6"/></g></g>
+<g id="mt" fill="#ff9a3c"><circle cx="66" r="10"/><circle cx="47" cy="47" r="10"/><circle cy="66" r="10"/><circle cx="-47" cy="-47" r="10"/><circle cy="-66" r="10"/><circle cx="-66" r="10"/></g>
+<marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8f7ff"/></marker></defs>
+<g font-size="17" fill="#e8f7ff"><circle cx="40" cy="24" r="9" fill="#1b6f8a" stroke="#2de2d0" stroke-width="2"/><text x="56" y="30">자성 코어</text>
+<circle cx="190" cy="24" r="7" fill="#ffd24a"/><text x="204" y="30">킬레이트 작용기</text><circle cx="380" cy="24" r="9" fill="#ff9a3c"/><text x="396" y="30">중금속 이온</text></g>
+<use href="#np" x="150" y="150"/>
+<path d="M240 150H350" stroke="#e8f7ff" stroke-width="3" marker-end="url(#ar)"/>
+<use href="#np" x="450" y="150"/><use href="#mt" x="450" y="150"/><circle cx="360" cy="60" r="10" fill="#ff9a3c"/><circle cx="560" cy="222" r="10" fill="#ff9a3c"/>
+<path d="M535 150H600" stroke="#e8f7ff" stroke-width="3" marker-end="url(#ar)"/>
+<use href="#np" x="700" y="150"/><use href="#mt" x="700" y="150"/>
+<rect x="810" y="70" width="46" height="80" fill="#d33"/><rect x="810" y="150" width="46" height="80" fill="#36c"/>
+<path d="M780 150H800" stroke="#e8f7ff" stroke-width="3" marker-end="url(#ar)"/>
+<g font-size="21" font-weight="700" fill="#2de2d0" text-anchor="middle"><text x="150" y="268">① 표면 기능화</text><text x="450" y="268">② 중금속 이온 포집</text><text x="720" y="268">③ 자석으로 회수</text></g>
+<g font-size="17" fill="#e8f7ff" text-anchor="middle"><text x="150" y="296">코어 표면에 작용기 부착</text><text x="450" y="296">작용기가 이온을 붙잡음</text><text x="720" y="296">중금속을 붙잡은 입자만 이동</text></g></svg><p>킬레이트 작용기는 자석에 끌리지 않아요. 자석에 끌리는 것은 <b>자성 코어</b>이고, 표면의 작용기가 중금속 이온을 붙잡아 함께 회수됩니다.</p></div>
+<div id="pr2" hidden><svg viewBox="0 0 900 330" role="img" aria-label="TiO2 광촉매가 자외선을 받아 유기오염물을 분해하는 과정">
+<defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8f7ff"/></marker><marker id="uv" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b58cff"/></marker>
+<g id="ti"><circle r="46" fill="#3a5f85" stroke="#9fe9ff" stroke-width="3"/><text y="7" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">TiO₂</text></g></defs>
+<g stroke="#b58cff" stroke-width="4"><path d="M85 30V92" marker-end="url(#uv)"/><path d="M110 30V92" marker-end="url(#uv)"/><path d="M135 30V92" marker-end="url(#uv)"/></g>
+<text x="110" y="22" font-size="18" fill="#b58cff" text-anchor="middle">자외선(UV)</text>
+<use href="#ti" x="110" y="150"/>
+<path d="M175 150H265" stroke="#e8f7ff" stroke-width="3" marker-end="url(#ar2)"/>
+<use href="#ti" x="340" y="150"/><circle cx="400" cy="108" r="15" fill="#2de2d0"/><text x="400" y="114" font-size="16" font-weight="700" text-anchor="middle" fill="#032">e⁻</text>
+<circle cx="300" cy="180" r="15" fill="#ffd24a"/><text x="300" y="186" font-size="16" font-weight="700" text-anchor="middle" fill="#032">h⁺</text>
+<path d="M405 150H495" stroke="#e8f7ff" stroke-width="3" marker-end="url(#ar2)"/>
+<use href="#ti" x="570" y="150"/><g fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="5 4"><circle cx="635" cy="108" r="16"/><circle cx="520" cy="198" r="16"/><circle cx="640" cy="190" r="12"/></g>
+<path d="M650 150H725" stroke="#e8f7ff" stroke-width="3" marker-end="url(#ar2)"/>
+<ellipse cx="800" cy="110" rx="56" ry="34" fill="#9b5de5"/><path d="M800 150V185" stroke="#e8f7ff" stroke-width="3" marker-end="url(#ar2)"/>
+<g fill="#c98cff"><circle cx="765" cy="215" r="10"/><circle cx="800" cy="225" r="10"/><circle cx="835" cy="212" r="10"/></g>
+<g font-size="21" font-weight="700" fill="#2de2d0" text-anchor="middle"><text x="110" y="268">① UV 조사</text><text x="340" y="268">② 전자·정공 생성</text><text x="570" y="268">③ 반응성 화학종</text><text x="800" y="268">④ 유기오염물 분해</text></g>
+<g font-size="17" fill="#e8f7ff" text-anchor="middle"><text x="110" y="296">TiO₂가 빛을 흡수</text><text x="340" y="296">e⁻와 h⁺가 분리</text><text x="570" y="296">산화·환원 반응에 관여</text><text x="800" y="296">큰 분자→작은 분자</text></g></svg><p>TiO₂에 자외선이 닿으면 전자와 정공이 생기고, 이들이 관여한 반응으로 유기오염물질이 분해돼요. 학습용으로 단순화한 도식입니다.</p></div></dialog>
+<script src="config.js"></script><script src="script.js"></script>
+</body></html>
