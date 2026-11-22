@@ -26,6 +26,7 @@ const CONFIG = {
   // 캐릭터 이미지 경로 (없으면 이름 첫 글자가 대신 표시됩니다)
   characters: {
     riwa:  { name: '리와',   img: 'assets/riwa.png' },
+    riwa2: { name: '리와', img: 'assets/ruwa2.png' },
     serin: { name: '세린',   img: 'assets/serin.png' },
     mayra: { name: '마이라', img: 'assets/mayra.png' }
   },
